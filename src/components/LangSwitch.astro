@@ -1,0 +1,68 @@
+---
+import { getRelativeLocaleUrl } from 'astro:i18n';
+import { getDict, getOtherLang, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const other = getOtherLang(lang);
+const href = getRelativeLocaleUrl(other);
+const label = getDict(lang).switchLabel;
+---
+
+<!-- Affiche le drapeau de la langue VERS laquelle on bascule -->
+<a class="lang_switch" href={href} hreflang={other} lang={other} aria-label={label} title={label}>
+  {
+    other === 'en' ? (
+      <svg viewBox="0 0 60 40" width="24" height="16" aria-hidden="true">
+        <clipPath id="uk">
+          <rect width="60" height="40" rx="3" />
+        </clipPath>
+        <g clip-path="url(#uk)">
+          <rect width="60" height="40" fill="#1f3a93" />
+          <path d="M0 0 60 40M60 0 0 40" stroke="#fff" stroke-width="8" />
+          <path d="M0 0 60 40M60 0 0 40" stroke="#d52b3a" stroke-width="3" />
+          <path d="M30 0V40M0 20H60" stroke="#fff" stroke-width="13" />
+          <path d="M30 0V40M0 20H60" stroke="#d52b3a" stroke-width="7" />
+        </g>
+      </svg>
+    ) : (
+      <svg viewBox="0 0 60 40" width="24" height="16" aria-hidden="true">
+        <clipPath id="fr">
+          <rect width="60" height="40" rx="3" />
+        </clipPath>
+        <g clip-path="url(#fr)">
+          <rect width="20" height="40" fill="#1f3a93" />
+          <rect x="20" width="20" height="40" fill="#fff" />
+          <rect x="40" width="20" height="40" fill="#d52b3a" />
+        </g>
+      </svg>
+    )
+  }
+</a>
+
+<style>
+  .lang_switch {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    border: 1px solid rgba(253, 252, 254, 0.3);
+    background: rgba(22, 19, 32, 0.65);
+    backdrop-filter: blur(4px);
+    -webkit-backdrop-filter: blur(4px);
+    transition: transform 0.2s ease, border-color 0.2s ease;
+  }
+
+  .lang_switch:hover {
+    transform: translateY(-2px);
+    border-color: var(--light_lav);
+  }
+</style>

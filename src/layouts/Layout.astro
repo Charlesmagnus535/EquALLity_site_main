@@ -1,0 +1,93 @@
+---
+import { getDict, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang?: Lang;
+}
+
+const { lang = 'fr' } = Astro.props;
+const t = getDict(lang);
+---
+
+<!doctype html>
+<html lang={lang}>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="icon" type="image/svg+xml" href="/EquALLity.svg" />
+    <meta name="generator" content={Astro.generator} />
+    <meta name="description" content={t.meta.description} />
+    <title>{t.meta.title}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Italianno&family=Montserrat:ital,wght@0,100..900;1,100..900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap"
+    />
+    <!-- icon_names doit rester dans l'ordre alphabétique -->
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200&icon_names=link,open_in_new"
+    />
+  </head>
+  <body>
+    <slot />
+  </body>
+</html>
+
+<style is:global>
+  :root {
+    --light_lav: #d4b7ed;
+    --lav: #ba71ea;
+    --purple: #6b189b;
+    --dot: #8f35c8;
+    --white: #fdfcfe;
+    --light_bg: #f5f2f8;
+    --dark: #20252d;
+    --darker: #161320;
+    --gray: #a1a1aa;
+    --width: 1100px; /* largeur max du contenu : au-delà, des marges apparaissent sur les côtés */
+    --nav_h: 75px;
+  }
+
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  html,
+  body {
+    margin: 0;
+    width: 100%;
+    background-color: var(--dark);
+    font-family: 'Montserrat', sans-serif;
+  }
+
+  img {
+    display: block;
+    max-width: 100%;
+  }
+
+  /* Conteneur centré, limité par --width */
+  .container {
+    width: min(var(--width), 100%);
+    margin: 0 auto;
+    padding: 0 20px;
+  }
+
+  .material-symbols-outlined {
+    font-variation-settings: 'FILL' 0, 'wght' 400, 'GRAD' 0, 'opsz' 24;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+</style>

@@ -1,0 +1,24 @@
+---
+import { site } from '../data/site';
+import { getDict, type Lang } from '../i18n/ui';
+import Section from './Section.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getDict(lang);
+---
+
+<Section title={t.team.title} tone="light" id="team">
+  <img class="team_photo" src={site.teamImage} alt={t.team.alt} loading="lazy" />
+</Section>
+
+<style>
+  .team_photo {
+    width: min(var(--width), 100%);
+    margin: 0 auto;
+    object-fit: cover;
+  }
+</style>

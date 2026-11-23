@@ -1,0 +1,20 @@
+---
+import { site } from '../data/site';
+import { getDict, type Lang } from '../i18n/ui';
+import Card from './Card.astro';
+import CardGrid from './CardGrid.astro';
+import Section from './Section.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getDict(lang);
+---
+
+<Section title={t.events.title} tone="lav" id="events">
+  <CardGrid>
+    {t.events.items.map((item, i) => <Card {...item} image={site.eventImages[i]} tone="lav" />)}
+  </CardGrid>
+</Section>

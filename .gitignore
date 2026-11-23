@@ -1,0 +1,26 @@
+# dépendances et build
+node_modules/
+dist/
+.astro/
+
+# photos non utilisées sur le site
+src/photos/
+
+# jamais publié
+.env
+.env.*
+*.pem
+*.key
+id_ed25519*
+id_rsa*
+cle_*
+
+# fichiers système et éditeurs
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/
+
+# journaux
+npm-debug.log*
+*.log

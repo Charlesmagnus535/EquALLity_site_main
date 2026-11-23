@@ -1,0 +1,64 @@
+---
+interface Props {
+  title: string;
+  tone?: 'light' | 'dark' | 'lav';
+  /** Contenu pleine largeur (ex. galerie qui déborde sur les côtés) */
+  bleed?: boolean;
+  id?: string;
+}
+
+const { title, tone = 'light', bleed = false, id } = Astro.props;
+---
+
+<section class={`section ${tone}`} id={id}>
+  <div class="container">
+    <h2><span class="dot" aria-hidden="true"></span>{title}</h2>
+    {!bleed && <slot />}
+  </div>
+  {bleed && <slot />}
+</section>
+
+<style>
+  .section {
+    padding: 60px 0 70px;
+  }
+
+  .light {
+    background: var(--light_bg);
+    color: var(--darker);
+  }
+
+  .dark {
+    background: var(--dark);
+    color: var(--white);
+  }
+
+  .lav {
+    background: var(--light_lav);
+    color: var(--darker);
+  }
+
+  h2 {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin: 0 0 40px;
+    font-size: clamp(22px, 3.2vw, 28px);
+    font-weight: 300;
+    letter-spacing: -0.5px;
+    text-transform: uppercase;
+  }
+
+  .dot {
+    flex: none;
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--dot);
+  }
+
+  /* un peu moins d'air quand la section est une galerie */
+  .dark {
+    padding: 50px 0 60px;
+  }
+</style>

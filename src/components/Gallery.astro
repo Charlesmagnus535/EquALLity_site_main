@@ -1,0 +1,81 @@
+---
+import { getDict, type Lang } from '../i18n/ui';
+import Section from './Section.astro';
+
+interface Props {
+  lang: Lang;
+  images: string[];
+}
+
+const { lang, images } = Astro.props;
+const t = getDict(lang);
+
+// La liste est dupliquée pour que la boucle soit continue (translateX -50%)
+const loop = [...images, ...images];
+---
+
+<Section title={t.gallery.title} tone="dark" bleed>
+  <div class="marquee" role="group" aria-label={t.gallery.label}>
+    <ul class="track">
+      {
+        loop.map((src, i) => (
+          <li aria-hidden={i >= images.length ? 'true' : undefined}>
+            <img src={src} alt="" loading="lazy" draggable="false" />
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</Section>
+
+<style>
+  .marquee {
+    --thumb_w: clamp(150px, 19vw, 260px);
+    --gap: 12px;
+    overflow: hidden;
+  }
+
+  .track {
+    display: flex;
+    width: max-content;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    animation: scroll 45s linear infinite;
+  }
+
+  .marquee:hover .track {
+    animation-play-state: paused;
+  }
+
+  .track li {
+    flex: none;
+    width: var(--thumb_w);
+    aspect-ratio: 1.23;
+    margin-right: var(--gap); /* margin (pas gap) => la boucle à -50% est exacte */
+  }
+
+  .track img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @keyframes scroll {
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .marquee {
+      overflow-x: auto;
+    }
+    .track {
+      animation: none;
+    }
+    .track li[aria-hidden='true'] {
+      display: none;
+    }
+  }
+</style>

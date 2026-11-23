@@ -1,0 +1,118 @@
+---
+import { site } from '../data/site';
+import { getDict, type Lang } from '../i18n/ui';
+import LangSwitch from './LangSwitch.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getDict(lang);
+---
+
+<section id="bg_accueil" style={`--hero: url('${site.heroImage}')`}>
+  <div id="center_accueil">
+    <img src="/EquALLity.svg" alt="Logo EquALLity" />
+    <h1 set:html={t.hero.title} />
+    <p>{t.hero.line1}</p>
+    <p>{t.hero.line2}</p>
+    <p class="credit">{t.hero.credit}</p>
+    <a class="btn_insta" href={site.instagram} target="_blank" rel="noopener noreferrer">
+      <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+        <rect x="3" y="3" width="18" height="18" rx="5"></rect>
+        <circle cx="12" cy="12" r="4"></circle>
+        <circle cx="17.3" cy="6.7" r="1" fill="currentColor" stroke="none"></circle>
+      </svg>
+      {t.hero.instagram}
+    </a>
+  </div>
+  <LangSwitch lang={lang} />
+</section>
+
+<style>
+  #bg_accueil {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+  }
+
+  /* Photo de fond + voile sombre violet */
+  #bg_accueil::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    background-image: linear-gradient(rgba(22, 19, 32, 0.72), rgba(22, 19, 32, 0.72)), var(--hero);
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
+
+  #center_accueil {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: calc(var(--nav_h) + 20px) 20px 40px;
+    text-align: center;
+  }
+
+  #center_accueil img {
+    width: clamp(170px, 20vw, 250px);
+    aspect-ratio: 1;
+  }
+
+  #center_accueil h1 {
+    margin: 0;
+    padding: 15px 0;
+    color: var(--white);
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(34px, 7vw, 60px);
+    font-weight: 200;
+    letter-spacing: 1px;
+  }
+
+  #center_accueil h1 :global(span) {
+    color: var(--lav);
+  }
+
+  #center_accueil p {
+    margin: 0;
+    padding: 0 0 5px;
+    color: var(--gray);
+    font-size: 13px;
+    letter-spacing: -0.1px;
+  }
+
+  .credit {
+    font-style: italic;
+  }
+
+  .btn_insta {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: 20px;
+    padding: 10px 45px;
+    border-radius: 50px;
+    background-color: var(--light_lav);
+    color: var(--darker);
+    font-size: 15px;
+    font-weight: 600;
+    text-decoration: none;
+    text-transform: uppercase;
+    transition: transform 0.2s ease, background-color 0.2s ease;
+  }
+
+  .btn_insta:hover {
+    transform: translateY(-2px);
+    background-color: var(--lav);
+  }
+</style>

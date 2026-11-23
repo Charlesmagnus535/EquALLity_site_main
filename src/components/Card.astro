@@ -1,0 +1,52 @@
+---
+interface Props {
+  plain: string;
+  accent: string;
+  text: string;
+  image: string;
+  tone?: 'light' | 'lav';
+}
+
+const { plain, accent, text, image, tone = 'light' } = Astro.props;
+---
+
+<article class={`card ${tone}`}>
+  <img src={image} alt="" loading="lazy" />
+  <h3>{plain} <span>{accent}</span></h3>
+  <p>{text}</p>
+</article>
+
+<style>
+  .card img {
+    width: 100%;
+    aspect-ratio: 4/3;
+    object-fit: cover;
+  }
+
+  h3 {
+    margin: 18px 0 12px;
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 1.25;
+    text-transform: uppercase;
+  }
+
+  h3 span {
+    font-weight: 700;
+  }
+
+  .light h3 span {
+    color: var(--lav);
+  }
+
+  .lav h3 span {
+    color: var(--white);
+  }
+
+  p {
+    margin: 0;
+    font-size: 13px;
+    line-height: 1.5;
+    color: rgba(22, 19, 32, 0.6);
+  }
+</style>

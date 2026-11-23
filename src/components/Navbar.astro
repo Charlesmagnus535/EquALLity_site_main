@@ -1,0 +1,266 @@
+---
+import { getDict, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getDict(lang);
+
+const links = [
+  { label: t.nav.home, href: 'https://equallity.fr' },
+  { label: t.nav.safe, href: 'http://vss.equallity.fr' },
+  // { label: t.nav.gala, href: '#' },
+];
+---
+
+<nav id="navbar" aria-label={t.nav.label}>
+  <div id="center_nav">
+    <a id="logo" href={lang === 'fr' ? '/' : `/${lang}/`}>
+      <div></div>
+      <h3>Equ<span>ALL</span>ity</h3>
+    </a>
+
+    <button
+      id="burger"
+      type="button"
+      aria-label={t.nav.menu}
+      aria-expanded="false"
+      aria-controls="links"
+    >
+      <span></span>
+      <span></span>
+      <span></span>
+    </button>
+
+    <ul id="links">
+      {
+        links.map((l) => (
+          <li>
+            <a href={l.href} title="[WIP] Bientôt disponible">{l.label}</a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</nav>
+
+<script>
+  const nav = document.getElementById('navbar');
+  const burger = document.getElementById('burger');
+  const links = document.getElementById('links');
+
+  // Fond de la navbar plus opaque dès qu'on scrolle
+  const update = () => nav?.classList.toggle('scrolled', window.scrollY > 40);
+  update();
+  window.addEventListener('scroll', update, { passive: true });
+
+  // Menu hamburger (mobile)
+  const setOpen = (open: boolean) => {
+    nav?.classList.toggle('open', open);
+    burger?.setAttribute('aria-expanded', String(open));
+  };
+
+  burger?.addEventListener('click', () => setOpen(!nav?.classList.contains('open')));
+  links?.addEventListener('click', (e) => {
+    if ((e.target as HTMLElement).closest('a')) setOpen(false);
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') setOpen(false);
+  });
+  window.matchMedia('(min-width: 701px)').addEventListener('change', (e) => {
+    if (e.matches) setOpen(false);
+  });
+</script>
+
+<style>
+  #navbar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    width: 100%;
+    height: var(--nav_h);
+    display: flex;
+    justify-content: center;
+    background: rgba(253, 252, 254, 0.05);
+    backdrop-filter: blur(6px);
+    -webkit-backdrop-filter: blur(6px);
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+  }
+
+  #navbar:global(.scrolled),
+  #navbar:global(.open) {
+    background: rgba(22, 19, 32, 0.92);
+  }
+
+  #navbar:global(.scrolled) {
+    box-shadow: 0 2px 20px rgba(0, 0, 0, 0.25);
+  }
+
+  #center_nav {
+    width: min(var(--width), 100%);
+    height: 100%;
+    padding: 0 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  #logo {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: calc(100% - 30px);
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  #logo div {
+    height: 100%;
+    aspect-ratio: 1;
+    background-image: url('/EquALLity.svg');
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+  }
+
+  #logo h3 {
+    margin: 0;
+    padding-left: 10px;
+    color: var(--light_lav);
+    font-family: 'Playfair Display', serif;
+    font-size: 30px;
+    font-weight: 400;
+    line-height: 100%;
+    cursor: pointer;
+  }
+
+  #logo h3 span {
+    color: var(--white);
+  }
+
+  #links {
+    display: flex;
+    align-items: center;
+    height: calc(100% - 30px);
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+  }
+
+  #links li {
+    height: 100%;
+  }
+
+  #links a {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    padding: 0 22px;
+    color: var(--light_lav);
+    font-size: 14px;
+    font-weight: 500;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: color 0.2s ease;
+  }
+
+  #links a:hover {
+    color: var(--white);
+  }
+
+  /* Bouton hamburger : caché sur desktop */
+  #burger {
+    display: none;
+    position: relative;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    border: none;
+    border-radius: 8px;
+    background: none;
+    cursor: pointer;
+  }
+
+  #burger span {
+    position: absolute;
+    left: 10px;
+    width: 22px;
+    height: 2px;
+    border-radius: 2px;
+    background: var(--light_lav);
+    transition: transform 0.25s ease, opacity 0.2s ease, top 0.25s ease;
+  }
+
+  #burger span:nth-child(1) {
+    top: 14px;
+  }
+  #burger span:nth-child(2) {
+    top: 20px;
+  }
+  #burger span:nth-child(3) {
+    top: 26px;
+  }
+
+  #navbar:global(.open) #burger span:nth-child(1) {
+    top: 20px;
+    transform: rotate(45deg);
+  }
+  #navbar:global(.open) #burger span:nth-child(2) {
+    opacity: 0;
+  }
+  #navbar:global(.open) #burger span:nth-child(3) {
+    top: 20px;
+    transform: rotate(-45deg);
+  }
+
+  @media (max-width: 700px) {
+    #logo h3 {
+      font-size: 24px;
+    }
+
+    #burger {
+      display: block;
+    }
+
+    /* Les liens deviennent un panneau sous la navbar */
+    #links {
+      position: absolute;
+      top: var(--nav_h);
+      left: 0;
+      width: 100%;
+      height: auto;
+      flex-direction: column;
+      align-items: stretch;
+      padding: 8px 20px 20px;
+      background: rgba(22, 19, 32, 0.96);
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.3);
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-8px);
+      transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s;
+    }
+
+    #navbar:global(.open) #links {
+      opacity: 1;
+      visibility: visible;
+      transform: none;
+    }
+
+    #links li {
+      height: auto;
+      border-bottom: 1px solid rgba(253, 252, 254, 0.1);
+    }
+
+    #links li:last-child {
+      border-bottom: none;
+    }
+
+    #links a {
+      padding: 16px 4px;
+      font-size: 16px;
+    }
+  }
+</style>

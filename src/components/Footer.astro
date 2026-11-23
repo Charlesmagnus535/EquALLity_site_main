@@ -1,0 +1,169 @@
+---
+import { site } from '../data/site';
+import { getDict, type Lang } from '../i18n/ui';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+const t = getDict(lang);
+
+const links = [
+  { label: t.footer.home, href: 'https://equallity.fr', active: true },
+  { label: t.footer.safe, href: 'http://vss.equallity.fr' },
+  // { label: t.footer.gala, href: '#' },
+];
+---
+
+<footer>
+  <div class="container">
+    <div class="top">
+      <div class="left">
+        <img class="mini_logo" src="/EquALLity.svg" alt="Logo EquALLity" />
+        <!-- {
+          links.map((l) => (
+            <a class="icon_btn" href={l.href} aria-label={l.label} target="_blank" rel="noopener noreferrer">
+              <span class="material-symbols-outlined">link</span>
+            </a>
+          ))
+        } -->
+      </div>
+
+      <p class="made">{t.footer.made} <span>2026</span></p>
+
+      <nav class="right" aria-label="Footer">
+        {links.map((l) => <a href={l.href} class:list={{ active: l.active }}>{l.label}</a>)}
+        <a href={site.bde} target="_blank" rel="noopener noreferrer">
+          {t.footer.bde}
+          <span class="material-symbols-outlined">link</span>
+        </a>
+      </nav>
+    </div>
+
+    <div class="giant_wrap" aria-hidden="true">
+      <p class="giant">EquALLity</p>
+    </div>
+  </div>
+</footer>
+
+<style>
+  footer {
+    overflow: hidden;
+    background: var(--darker);
+    color: var(--white);
+  }
+
+  .top {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px 24px;
+    padding: 20px 0 10px;
+  }
+
+  .left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .mini_logo {
+    width: 40px;
+    aspect-ratio: 1;
+    margin-right: 4px;
+  }
+
+  .icon_btn {
+    width: 30px;
+    height: 30px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 1px solid rgba(253, 252, 254, 0.45);
+    border-radius: 7px;
+    color: var(--white);
+    text-decoration: none;
+    transition: border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .icon_btn:hover {
+    border-color: var(--light_lav);
+    color: var(--light_lav);
+  }
+
+  .icon_btn .material-symbols-outlined {
+    font-size: 18px;
+  }
+
+  .made {
+    margin: 0;
+    font-family: 'Italianno', cursive;
+    font-size: 22px;
+    color: var(--light_lav);
+  }
+
+  .made span {
+    margin-left: 8px;
+    font-family: 'Playfair Display', serif;
+    font-size: 14px;
+    color: var(--white);
+  }
+
+  .right {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+  }
+
+  .right a {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: var(--white);
+    font-size: 17px;
+    font-weight: 700;
+    text-decoration: none;
+    transition: color 0.2s ease;
+  }
+
+  .right a:hover,
+  .right a.active {
+    color: var(--lav);
+  }
+
+  .right .material-symbols-outlined {
+    font-size: 17px;
+  }
+
+  /*
+    Gros logotype : il remplit exactement la largeur du conteneur.
+    Mesures de "EquALLity" en Playfair Display 400 (en em) :
+      - largeur de l'encre : 4,655  (du bord gauche du E au bord droit du y)
+      - le E démarre à 0,031 de l'origine  -> margin-left: -0.031em
+      - hauteur de l'encre : 0,969  (0,766 au-dessus de la ligne de base + 0,203 de jambages q/y)
+  */
+  .giant_wrap {
+    container-type: inline-size;
+    padding-bottom: 12px;
+    overflow: hidden;
+  }
+
+  .giant {
+    margin: -0.268em 0 0 -0.031em;
+    color: var(--light_lav); 
+    font-family: 'Playfair Display', serif;
+    font-size: calc(100cqw / 4.655);
+    font-weight: 400;
+    line-height: 1.237;
+    white-space: nowrap;
+    user-select: none;
+  }
+
+  @media (max-width: 700px) {
+    .top {
+      justify-content: center;
+    }
+  }
+</style>

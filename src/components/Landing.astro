@@ -1,0 +1,31 @@
+---
+import Layout from '../layouts/Layout.astro';
+import type { Lang } from '../i18n/ui';
+import { site } from '../data/site';
+import Actions from './Actions.astro';
+import Events from './Events.astro';
+import Footer from './Footer.astro';
+import Gallery from './Gallery.astro';
+import Home from './Home.astro';
+import Navbar from './Navbar.astro';
+import Team from './Team.astro';
+
+interface Props {
+  lang: Lang;
+}
+
+const { lang } = Astro.props;
+---
+
+<Layout lang={lang}>
+  <Navbar lang={lang} />
+  <main>
+    <Home lang={lang} />
+    <Actions lang={lang} />
+    <Gallery lang={lang} images={site.actionsGallery} />
+    <Events lang={lang} />
+    <Gallery lang={lang} images={site.eventsGallery} />
+    <Team lang={lang} />
+  </main>
+  <Footer lang={lang} />
+</Layout>
